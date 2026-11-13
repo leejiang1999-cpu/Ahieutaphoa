@@ -18,17 +18,18 @@ overflow:hidden;border:1px solid #ffd166;margin-bottom:5px}
 .meter-fill{height:100%;width:0%;background:linear-gradient(90deg,#80ed99,#ffd166,#ef476f);
 transition:width .3s}
 .meter-txt{font-size:12px;font-weight:bold;color:#ffd166;margin-bottom:10px}
-.avatar{font-size:62px;margin:4px 0;transition:transform .2s}
+.avatar{font-size:60px;margin:4px 0;transition:transform .2s}
 .shake{animation:shk .35s}
 @keyframes shk{0%{transform:rotate(0)}25%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}75%{transform:rotate(-8deg)}100%{transform:rotate(0)}}
 .bubble{background:#fff;color:#1b4332;padding:12px;border-radius:14px;font-size:13px;
-font-weight:bold;line-height:1.45;min-height:82px;display:flex;align-items:center;
+font-weight:bold;line-height:1.45;min-height:86px;display:flex;align-items:center;
 justify-content:center;margin-bottom:14px;box-shadow:0 4px 10px rgba(0,0,0,.25)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 button{padding:10px 6px;border:none;border-radius:11px;font-weight:bold;font-size:11.5px;
 cursor:pointer;color:#1b4332;background:#ffd166;box-shadow:0 3px 0 #ca6702;line-height:1.3}
 button:active{transform:translateY(2px);box-shadow:none}
 button.sub-btn{background:#90e0ef;box-shadow:0 3px 0 #0077b6}
+button.pink-btn{background:#ffccd5;box-shadow:0 3px 0 #c9184a;color:#590d22}
 button.calm{grid-column:span 2;background:#80ed99;box-shadow:0 3px 0 #2d6a4f;font-size:14px;padding:13px}
 .stats{margin-top:10px;font-size:11px;color:#95d5b2}
 .ft{margin-top:auto;padding-top:10px;font-size:11px;color:#b7e4c7;line-height:1.4}
@@ -47,15 +48,13 @@ button.calm{grid-column:span 2;background:#80ed99;box-shadow:0 3px 0 #2d6a4f;fon
 </div>
 <div class="ft">📍 Cách ngã tư đèn đỏ 500m hướng đi bờ hồ Ea Kao<br>Tác giả: <b>Niê Ngọc Hiếu</b> - Chơi vui xả stress!</div>
 <script>
-var anger=0,cnt=0,praised=false,menuMode="main";
+var anger=0,cnt=0,praised=false,noOnion=false;
 var otherQ=(
 "Khách mua gói thuốc lá: 'Hút thuốc có hại cho sức khỏe lắm em ơi, bỏ đi!... Mà nghĩ cũng tội bà con nông dân canh tác nông nghiệp trồng cây thuốc lá vất vả, thôi làm 2 gói ủng hộ nông dân đi em!'|"+
 "Khách mua cây kem tươi: 'Ăn đồ ngọt nhiều dễ béo bụng lắm nha!... Nhưng mà mua 1 cây ăn nó cô đơn, làm 2 cây cho có cặp có đôi em ơi!'|"+
 "Khách mua gói mì tôm: 'Ăn mì tôm nhiều nóng trong người lắm!... Mà thôi lấy cả thùng 30 gói về cất gầm giường phòng khi nửa đêm đói bụng cho cẩn thận!'|"+
 "Khách mua lon Bò Húc: 'Uống nước tăng lực buổi tối là thức trắng đêm luôn đó!... Thôi lấy nguyên lốc 6 lon uống cho tỉnh táo cả tuần em ơi!'|"+
-"Khách mua cân thịt heo: 'Ăn nhiều đạm dễ tăng cân lắm!... Mà thịt hôm nay tươi rói cắt tại thớt, lấy thêm nửa ký ba rọi về kho tàu cho chắc ăn!'|"+
-"Khách mua bịch bim bim: 'Ăn vặt nhiều coi chừng bỏ cơm tối nha!... Nhưng gói này ít lắm, lấy thêm bịch chân gà cay nhâm nhi mới đã!'|"+
-"Khách mua chai nước mắm: 'Ăn mặn hại thận lắm em ơi!... Mà chai này cốt nhĩ thơm ngon lắm, làm luôn cặp 2 chai để dành ăn dần cho tiện!'"
+"Khách mua cân thịt heo: 'Ăn nhiều đạm dễ tăng cân lắm!... Mà thịt hôm nay tươi rói cắt tại thớt, lấy thêm nửa ký ba rọi về kho tàu cho chắc ăn!'"
 ).split("|");
 function pick(arr){return arr.at(Math.floor(Math.random()*arr.length));}
 function shakeFace(emo){
@@ -79,32 +78,32 @@ else t.innerText="Độ quạu của anh Hiếu: "+anger+"% (Sắp bốc khói r
 return false;
 }
 function renderMain(){
-menuMode="main";
 document.getElementById("btn-area").innerHTML=
 "<button onclick='actDebt()'>🍺 Mua thiếu bia rượu</button>"+
 "<button onclick='actBeer()'>🍻 Mua 1 thùng bia</button>"+
 "<button onclick='actPraise()'>😍 Khen anh đẹp trai</button>"+
-"<button onclick='actOnion()'>🌿 Xin cọng hành, tỏi</button>"+
-"<button style='grid-column:span 2' class='sub-btn' onclick='actOther()'>🛒 Hỏi mua thuốc lá, kem, mì, thịt...</button>";
+"<button onclick='actUgly()'>😝 Chê anh xấu trai</button>"+
+"<button onclick='actOnion()'>🌿 Xin cọng hành, ngò</button>"+
+"<button class='pink-btn' onclick='actLove()'>💘 Hỏi có người yêu chưa</button>"+
+"<button class='pink-btn' onclick='actGirl()'>💃 Gái xinh vô mua hàng</button>"+
+"<button class='sub-btn' onclick='actOther()'>🛒 Thuốc lá, kem, mì...</button>";
 }
 function actDebt(){
-if(addAnger(20))return;
+if(addAnger(18))return;
 shakeFace("😱");
 setSay("OH NO! Thời buổi kinh tế khó khăn, bia rượu là mặt hàng nhạy cảm, anh không bán thiếu đâu em ơi!");
 document.getElementById("btn-area").innerHTML=
 "<button class='sub-btn' onclick='debtSub(0)'>🗣️ Năn nỉ: Mai em trả liền!</button>"+
 "<button class='sub-btn' onclick='debtSub(1)'>❤️ Cho em cắm người yêu!</button>"+
 "<button class='sub-btn' onclick='debtSub(2)'>📱 Cầm giấy tờ xe & iPhone</button>"+
-"<button onclick='renderMain()'>🔙 Thôi không thiếu nữa</button>";
+"<button onclick='renderMain()'>🔙 Quay lại quầy hàng</button>";
 }
 function debtSub(opt){
 if(opt===0){
-if(addAnger(25))return;
-shakeFace("😒");
+if(addAnger(22))return;shakeFace("😒");
 setSay("ĐẾU TIN! Hôm qua thằng bạn em cũng thề độc 'mai trả' xong giờ nó đi biệt tích luôn rồi!");
 }else if(opt===1){
-if(addAnger(30))return;
-shakeFace("🙅‍♂️");
+if(addAnger(28))return;shakeFace("🙅‍♂️");
 setSay("SAY NO! Cơm nhà anh còn lo chưa xong, rước người yêu em về anh hong nuôi nổi đâu, đem về gấp!");
 }else{
 addAnger(-15);shakeFace("🤑");
@@ -113,33 +112,80 @@ renderMain();
 }
 }
 function actBeer(){
-if(addAnger(10))return;
-shakeFace("😇");
+if(addAnger(8))return;shakeFace("😇");
 setSay("Khuyên chân thành nha: Bỏ rượu bia đi em, uống nhiều hại gan đau dạ dày lắm!... Mà khoan, em lấy 1 thùng hả? Thôi lấy 2 THÙNG uống cho cẩn thận, lỡ đang vui lại hết bia!");
 }
 function actPraise(){
-praised=true;
-if(addAnger(5))return;
-shakeFace("🤨");
+praised=true;noOnion=false;
+if(addAnger(5))return;shakeFace("🤨");
 setSay("ĐẾU TIN! Mấy đứa khen anh đẹp trai toàn có âm mưu xin xỏ hoặc đòi giảm giá đúng không? Anh tỉnh lắm!");
 }
+function actUgly(){
+praised=false;
+if(addAnger(22))return;shakeFace("😜");
+setSay("Chê anh xấu trai hả? Vậy thì anh BÁN ĐẮT HƠN cho biết mặt nha, lêu lêu! Không mua thì mời qua tiệm khác đọc biển!");
+}
 function actOnion(){
+if(noOnion){
+if(addAnger(25))return;shakeFace("😤");
+setSay("Đã bảo anh không dại gái rồi mà còn trêu, hành ngò hôm nay KHÔNG CHO một cọng nào hết nha!");
+return;
+}
 if(praised){
 praised=false;addAnger(-10);shakeFace("🥰");
-setSay("Được cái biết khen anh đẹp trai thật lòng nên anh duyệt! Tặng luôn nắm hành lá với mấy tép tỏi mang về nấu canh cho thơm nhé!");
+setSay("Được cái biết khen anh đẹp trai thật lòng nên anh duyệt! Tặng luôn nắm hành lá, rau ngò với mấy tép tỏi mang về nấu canh cho thơm nhé!");
 }else{
-if(addAnger(25))return;
-shakeFace("😤");
-setSay("Hành tỏi sáng nay đắt hơn thịt heo đó em ơi! Không khen anh câu nào mà đòi xin không là lỗ vốn anh rồi!");
+if(addAnger(20))return;shakeFace("😤");
+setSay("Hành ngò sáng nay đắt hơn thịt heo đó em ơi! Không khen anh câu nào mà đòi xin không là lỗ vốn anh rồi!");
+}
+}
+function actLove(){
+if(addAnger(8))return;shakeFace("😏");
+setSay("Anh đang độc thân vui tính đây! Thế nhà em có em gái hay chị gái nào xinh xắn không giới thiệu cho anh đi?");
+document.getElementById("btn-area").innerHTML=
+"<button class='pink-btn' onclick='loveSub(0)'>👧 Có chị/em gái xinh lắm!</button>"+
+"<button class='sub-btn' onclick='loveSub(1)'>📱 Đưa Facebook cho anh xem ảnh</button>"+
+"<button style='grid-column:span 2' onclick='renderMain()'>🔙 Thôi ngại lắm, quay lại</button>";
+}
+function loveSub(opt){
+if(opt===0){
+if(addAnger(18))return;shakeFace("🙄");
+setSay("ĐẾU TIN! Mấy đứa đi chợ toàn nói xạo có em gái xinh để xin thêm hành ngò đúng không? Có ảnh Facebook thì đưa đây anh kiểm chứng!");
+}else{
+addAnger(-20);shakeFace("😍");
+setSay("Ái chà uy tín quá! Xinh xắn dễ thương thế này thì anh giảm giá mạnh kèm tặng quà lấy thảo mang về làm quà cho chị em nhé!");
+renderMain();
+}
+}
+function actGirl(){
+if(addAnger(5))return;shakeFace("💃");
+setSay("Có bạn gái xinh ghé mua hàng! Để xem bạn ấy nói chuyện với chủ quán thế nào nào...");
+document.getElementById("btn-area").innerHTML=
+"<button class='pink-btn' onclick='girlSub(0)'>🥰 Nói ngọt: Anh Hiếu bán rẻ cho em nha</button>"+
+"<button class='sub-btn' onclick='girlSub(1)'>😒 Nói khó nghe, chảnh chọe</button>"+
+"<button class='sub-btn' onclick='girlSub(2)'>😜 Trêu: Anh Hiếu dại gái quá!</button>"+
+"<button onclick='renderMain()'>🔙 Quay lại quầy hàng</button>";
+}
+function girlSub(opt){
+if(opt===0){
+addAnger(-15);shakeFace("😊");
+setSay("Khách hàng dễ thương nói chuyện ngọt ngào thì anh bớt giá lấy thảo ngay! Vui vẻ cả làng nha!");
+}else if(opt===1){
+if(addAnger(25))return;shakeFace("🗿");
+setSay("Nói chuyện khó nghe thì MỘT XU ANH CŨNG KHÔNG BỚT! Anh đẹp trai sòng phẳng chứ anh KHÔNG DẠI GÁI nha!");
+}else{
+noOnion=true;praised=false;
+if(addAnger(30))return;shakeFace("😈");
+setSay("Bảo anh dại gái hả? Anh BÁN ĐẮT GẤP ĐÔI luôn cho chừa, xin hành ngò anh cũng KHÔNG CHO cọng nào nha!");
+renderMain();
 }
 }
 function actOther(){
-if(addAnger(12))return;
-shakeFace("🤓");
+if(addAnger(10))return;shakeFace("🤓");
 setSay(pick(otherQ));
 }
 function calmDown(){
-anger=0;praised=false;shakeFace("🥳");
+anger=0;praised=false;noOnion=false;shakeFace("🥳");
 setSay("Haha cảm ơn khách quý đã ủng hộ cây kem mát lạnh! Anh Hiếu hết quạu rồi, mời em trêu tiếp!");
 document.getElementById("bar").style.width="0%";
 document.getElementById("m-txt").innerText="Độ quạu của anh Hiếu: 0% (Vừa được dỗ ngọt)";
