@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Trêu Anh Hiếu Chủ Quán Tạp Hóa</title>
+<style>
+*{box-sizing:border-box;user-select:none;-webkit-user-select:none}
+body{margin:0;padding:12px;background:linear-gradient(135deg,#1b4332,#2b2d42);
+font-family:Arial,sans-serif;color:#fff;display:flex;flex-direction:column;
+align-items:center;min-height:100vh;text-align:center}
+h1{font-size:18px;margin:4px 0;color:#ffd166;text-transform:uppercase}
+.sub{font-size:11px;color:#b7e4c7;margin-bottom:10px}
+.card{background:rgba(255,255,255,.1);border:2px solid #ffd166;border-radius:18px;
+padding:14px;width:100%;max-width:360px;box-shadow:0 8px 25px rgba(0,0,0,.4)}
+.meter-wrap{background:#081c15;border-radius:12px;height:18px;width:100%;
+overflow:hidden;border:1px solid #ffd166;margin-bottom:5px}
+.meter-fill{height:100%;width:0%;background:linear-gradient(90deg,#80ed99,#ffd166,#ef476f);
+transition:width .3s}
+.meter-txt{font-size:12px;font-weight:bold;color:#ffd166;margin-bottom:10px}
+.avatar{font-size:62px;margin:4px 0;transition:transform .2s}
+.shake{animation:shk .35s}
+@keyframes shk{0%{transform:rotate(0)}25%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}75%{transform:rotate(-8deg)}100%{transform:rotate(0)}}
+.bubble{background:#fff;color:#1b4332;padding:12px;border-radius:14px;font-size:13px;
+font-weight:bold;line-height:1.45;min-height:82px;display:flex;align-items:center;
+justify-content:center;margin-bottom:14px;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+button{padding:10px 6px;border:none;border-radius:11px;font-weight:bold;font-size:11.5px;
+cursor:pointer;color:#1b4332;background:#ffd166;box-shadow:0 3px 0 #ca6702;line-height:1.3}
+button:active{transform:translateY(2px);box-shadow:none}
+button.sub-btn{background:#90e0ef;box-shadow:0 3px 0 #0077b6}
+button.calm{grid-column:span 2;background:#80ed99;box-shadow:0 3px 0 #2d6a4f;font-size:14px;padding:13px}
+.stats{margin-top:10px;font-size:11px;color:#95d5b2}
+.ft{margin-top:auto;padding-top:10px;font-size:11px;color:#b7e4c7;line-height:1.4}
+</style>
+</head>
+<body>
+<h1>😜 Trêu Anh Hiếu Chủ Quán</h1>
+<div class="sub">Tạp Hóa Vui Vẻ & Tiệm Kem Ea Kao (Chơi mọi lúc mọi nơi)</div>
+<div class="card">
+<div class="meter-wrap"><div class="meter-fill" id="bar"></div></div>
+<div class="meter-txt" id="m-txt">Độ quạu của anh Hiếu: 0% (Đang rất yêu đời)</div>
+<div class="avatar" id="face">😎</div>
+<div class="bubble" id="say">"Chào khách quý! Ghé Tạp Hóa Vui Vẻ mua gì cứ bảo anh Hiếu tư vấn, đảm bảo tư vấn xong... không biết đường nào mà lần!"</div>
+<div class="grid" id="btn-area"></div>
+<div class="stats" id="cnt-txt">Số lần chọc ghẹo anh Hiếu: 0 lần</div>
+</div>
+<div class="ft">📍 Cách ngã tư đèn đỏ 500m hướng đi bờ hồ Ea Kao<br>Tác giả: <b>Niê Ngọc Hiếu</b> - Chơi vui xả stress!</div>
+<script>
+var anger=0,cnt=0,praised=false,menuMode="main";
+var otherQ=(
+"Khách mua gói thuốc lá: 'Hút thuốc có hại cho sức khỏe lắm em ơi, bỏ đi!... Mà nghĩ cũng tội bà con nông dân canh tác nông nghiệp trồng cây thuốc lá vất vả, thôi làm 2 gói ủng hộ nông dân đi em!'|"+
+"Khách mua cây kem tươi: 'Ăn đồ ngọt nhiều dễ béo bụng lắm nha!... Nhưng mà mua 1 cây ăn nó cô đơn, làm 2 cây cho có cặp có đôi em ơi!'|"+
+"Khách mua gói mì tôm: 'Ăn mì tôm nhiều nóng trong người lắm!... Mà thôi lấy cả thùng 30 gói về cất gầm giường phòng khi nửa đêm đói bụng cho cẩn thận!'|"+
+"Khách mua lon Bò Húc: 'Uống nước tăng lực buổi tối là thức trắng đêm luôn đó!... Thôi lấy nguyên lốc 6 lon uống cho tỉnh táo cả tuần em ơi!'|"+
+"Khách mua cân thịt heo: 'Ăn nhiều đạm dễ tăng cân lắm!... Mà thịt hôm nay tươi rói cắt tại thớt, lấy thêm nửa ký ba rọi về kho tàu cho chắc ăn!'|"+
+"Khách mua bịch bim bim: 'Ăn vặt nhiều coi chừng bỏ cơm tối nha!... Nhưng gói này ít lắm, lấy thêm bịch chân gà cay nhâm nhi mới đã!'|"+
+"Khách mua chai nước mắm: 'Ăn mặn hại thận lắm em ơi!... Mà chai này cốt nhĩ thơm ngon lắm, làm luôn cặp 2 chai để dành ăn dần cho tiện!'"
+).split("|");
+function pick(arr){return arr.at(Math.floor(Math.random()*arr.length));}
+function shakeFace(emo){
+var f=document.getElementById("face");
+f.innerText=emo;f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");
+}
+function setSay(txt){document.getElementById("say").innerText="\""+txt+"\"";}
+function addAnger(val){
+cnt++;anger=Math.max(0,Math.min(100,anger+val));
+document.getElementById("cnt-txt").innerText="Số lần chọc ghẹo anh Hiếu: "+cnt+" lần";
+document.getElementById("bar").style.width=anger+"%";
+var t=document.getElementById("m-txt");
+if(anger>=100){
+shakeFace("🤬");t.innerText="Độ quạu: 100% (ANH HIẾU QUẠU THẬT RỒI!)";
+document.getElementById("btn-area").innerHTML="<button class='calm' onclick='calmDown()'>🍦 Mua ủng hộ 1 cây kem tươi dỗ anh Hiếu!</button>";
+return true;
+}
+if(anger<30)t.innerText="Độ quạu của anh Hiếu: "+anger+"% (Vẫn đang cười tươi)";
+else if(anger<65)t.innerText="Độ quạu của anh Hiếu: "+anger+"% (Bắt đầu đổ mồ hôi)";
+else t.innerText="Độ quạu của anh Hiếu: "+anger+"% (Sắp bốc khói rồi!)";
+return false;
+}
+function renderMain(){
+menuMode="main";
+document.getElementById("btn-area").innerHTML=
+"<button onclick='actDebt()'>🍺 Mua thiếu bia rượu</button>"+
+"<button onclick='actBeer()'>🍻 Mua 1 thùng bia</button>"+
+"<button onclick='actPraise()'>😍 Khen anh đẹp trai</button>"+
+"<button onclick='actOnion()'>🌿 Xin cọng hành, tỏi</button>"+
+"<button style='grid-column:span 2' class='sub-btn' onclick='actOther()'>🛒 Hỏi mua thuốc lá, kem, mì, thịt...</button>";
+}
+function actDebt(){
+if(addAnger(20))return;
+shakeFace("😱");
+setSay("OH NO! Thời buổi kinh tế khó khăn, bia rượu là mặt hàng nhạy cảm, anh không bán thiếu đâu em ơi!");
+document.getElementById("btn-area").innerHTML=
+"<button class='sub-btn' onclick='debtSub(0)'>🗣️ Năn nỉ: Mai em trả liền!</button>"+
+"<button class='sub-btn' onclick='debtSub(1)'>❤️ Cho em cắm người yêu!</button>"+
+"<button class='sub-btn' onclick='debtSub(2)'>📱 Cầm giấy tờ xe & iPhone</button>"+
+"<button onclick='renderMain()'>🔙 Thôi không thiếu nữa</button>";
+}
+function debtSub(opt){
+if(opt===0){
+if(addAnger(25))return;
+shakeFace("😒");
+setSay("ĐẾU TIN! Hôm qua thằng bạn em cũng thề độc 'mai trả' xong giờ nó đi biệt tích luôn rồi!");
+}else if(opt===1){
+if(addAnger(30))return;
+shakeFace("🙅‍♂️");
+setSay("SAY NO! Cơm nhà anh còn lo chưa xong, rước người yêu em về anh hong nuôi nổi đâu, đem về gấp!");
+}else{
+addAnger(-15);shakeFace("🤑");
+setSay("Gật đầu cái rụp! Giấy tờ xe chính chủ với điện thoại xịn thì uy tín quá rồi, xách bia về nhậu tới bến đi em!");
+renderMain();
+}
+}
+function actBeer(){
+if(addAnger(10))return;
+shakeFace("😇");
+setSay("Khuyên chân thành nha: Bỏ rượu bia đi em, uống nhiều hại gan đau dạ dày lắm!... Mà khoan, em lấy 1 thùng hả? Thôi lấy 2 THÙNG uống cho cẩn thận, lỡ đang vui lại hết bia!");
+}
+function actPraise(){
+praised=true;
+if(addAnger(5))return;
+shakeFace("🤨");
+setSay("ĐẾU TIN! Mấy đứa khen anh đẹp trai toàn có âm mưu xin xỏ hoặc đòi giảm giá đúng không? Anh tỉnh lắm!");
+}
+function actOnion(){
+if(praised){
+praised=false;addAnger(-10);shakeFace("🥰");
+setSay("Được cái biết khen anh đẹp trai thật lòng nên anh duyệt! Tặng luôn nắm hành lá với mấy tép tỏi mang về nấu canh cho thơm nhé!");
+}else{
+if(addAnger(25))return;
+shakeFace("😤");
+setSay("Hành tỏi sáng nay đắt hơn thịt heo đó em ơi! Không khen anh câu nào mà đòi xin không là lỗ vốn anh rồi!");
+}
+}
+function actOther(){
+if(addAnger(12))return;
+shakeFace("🤓");
+setSay(pick(otherQ));
+}
+function calmDown(){
+anger=0;praised=false;shakeFace("🥳");
+setSay("Haha cảm ơn khách quý đã ủng hộ cây kem mát lạnh! Anh Hiếu hết quạu rồi, mời em trêu tiếp!");
+document.getElementById("bar").style.width="0%";
+document.getElementById("m-txt").innerText="Độ quạu của anh Hiếu: 0% (Vừa được dỗ ngọt)";
+renderMain();
+}
+renderMain();
+</script>
+</body>
+</html>
